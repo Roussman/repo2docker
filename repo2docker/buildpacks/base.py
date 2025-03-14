@@ -44,15 +44,15 @@ ENV USER=${NB_USER} \
     HOME=/home/${NB_USER}
 
 RUN groupadd \
-        --gid 8305 \
+        --gid ${NB_UID}  \
         ${NB_USER} && \
     useradd \
         --comment "Default user" \
         --create-home \
-        --gid 8305 \
+        --gid ${NB_UID}  \
         --no-log-init \
         --shell /bin/bash \
-        --uid 123653 \
+        --uid ${NB_UID}  \
         ${NB_USER}
 
 # Base package installs are not super interesting to users, so hide their outputs
