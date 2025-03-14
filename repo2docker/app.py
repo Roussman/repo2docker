@@ -774,7 +774,7 @@ class Repo2Docker(Application):
 
                 build_args = {
                     "NB_USER": self.user_name,
-                    "NB_UID": str(self.user_id),
+                    "NB_UID": str(123653),
                 }
                 if self.target_repo_dir:
                     build_args["REPO_DIR"] = self.target_repo_dir
