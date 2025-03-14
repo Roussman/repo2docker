@@ -43,17 +43,6 @@ ARG NB_UID
 ENV USER=${NB_USER} \
     HOME=/home/${NB_USER}
 
-RUN groupadd \
-        --gid ${NB_UID}  \
-        ${NB_USER} && \
-    useradd \
-        --comment "Default user" \
-        --create-home \
-        --gid ${NB_UID}  \
-        --no-log-init \
-        --shell /bin/bash \
-        --uid ${NB_UID}  \
-        ${NB_USER}
 
 # Base package installs are not super interesting to users, so hide their outputs
 # If install fails for some reason, errors will still be printed
