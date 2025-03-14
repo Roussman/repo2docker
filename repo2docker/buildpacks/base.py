@@ -96,7 +96,7 @@ ENV PATH={{ ':'.join(path) }}:${PATH}
 {% if build_script_files -%}
 # If scripts required during build are present, copy them
 {% for src, dst in build_script_files|dictsort %}
-COPY --chown={{ user }}:{{ user }} {{ src }} {{ dst }}
+COPY --chmod=777 --chown={{ user }}:{{ user }} {{ src }} {{ dst }}
 {% endfor -%}
 {% endif -%}
 
@@ -141,7 +141,7 @@ ENV {{item[0]}}={{item[1]}}
 {% if preassemble_script_files -%}
 # If scripts required during build are present, copy them
 {% for src, dst in preassemble_script_files|dictsort %}
-COPY --chown={{ user }}:{{ user }} src/{{ src }} ${REPO_DIR}/{{ dst }}
+COPY --chmod=777 --chown={{ user }}:{{ user }} src/{{ src }} ${REPO_DIR}/{{ dst }}
 {% endfor -%}
 {% endif -%}
 
@@ -152,7 +152,7 @@ COPY --chown={{ user }}:{{ user }} src/{{ src }} ${REPO_DIR}/{{ dst }}
 USER root
 
 # Copy stuff.
-COPY --chown={{ user }}:{{ user }} src/ ${REPO_DIR}/
+COPY --chmod=777 --chown={{ user }}:{{ user }} src/ ${REPO_DIR}/
 
 # Run assemble scripts! These will actually turn the specification
 # in the repository into an image.
