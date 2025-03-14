@@ -43,6 +43,17 @@ ARG NB_UID
 ENV USER=${NB_USER} \
     HOME=/home/${NB_USER}
 
+RUN groupadd \
+        --gid ${NB_UID} \
+        ${NB_USER} && \
+    useradd \
+        --comment "Default user" \
+        --create-home \
+        --gid ${NB_UID} \
+        --no-log-init \
+        --shell /bin/bash \
+        --uid ${NB_UID} \
+        ${NB_USER}
 
 # Base package installs are not super interesting to users, so hide their outputs
 # If install fails for some reason, errors will still be printed
@@ -85,7 +96,7 @@ ENV PATH={{ ':'.join(path) }}:${PATH}
 {% if build_script_files -%}
 # If scripts required during build are present, copy them
 {% for src, dst in build_script_files|dictsort %}
-COPY --chmod=777 --chown={{ user }}:{{ user }} {{ src }} {{ dst }}
+COPY --chown={{ user }}:{{ user }} {{ src }} {{ dst }}
 {% endfor -%}
 {% endif -%}
 
@@ -130,7 +141,7 @@ ENV {{item[0]}}={{item[1]}}
 {% if preassemble_script_files -%}
 # If scripts required during build are present, copy them
 {% for src, dst in preassemble_script_files|dictsort %}
-COPY --chmod=777 --chown={{ user }}:{{ user }} src/{{ src }} ${REPO_DIR}/{{ dst }}
+COPY --chown={{ user }}:{{ user }} src/{{ src }} ${REPO_DIR}/{{ dst }}
 {% endfor -%}
 {% endif -%}
 
@@ -141,7 +152,7 @@ COPY --chmod=777 --chown={{ user }}:{{ user }} src/{{ src }} ${REPO_DIR}/{{ dst 
 USER root
 
 # Copy stuff.
-COPY --chmod=777 --chown={{ user }}:{{ user }} src/ ${REPO_DIR}/
+COPY --chown={{ user }}:{{ user }} src/ ${REPO_DIR}/
 
 # Run assemble scripts! These will actually turn the specification
 # in the repository into an image.
@@ -193,7 +204,7 @@ CMD ["jupyter", "notebook", "--ip", "0.0.0.0"]
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 # Also used for the group
-DEFAULT_NB_UID = 123653
+DEFAULT_NB_UID = 1000
 
 
 class BuildPack:
